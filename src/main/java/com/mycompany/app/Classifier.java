@@ -1,20 +1,22 @@
-import control.RetrieveWekaInfo;
-import files.EvaluationFile;
-import model.AllEvaluationLists;
+package com.mycompany.app;
+
+import weka.RetrieveInfoFromWeka;
+import utils.EvaluationFile;
+import utils.AllEvaluationLists;
 import utils.ProjectsUtils;
 
-public class ClassifierClass {
+public class Classifier {
 
-    static int NUMRELEASES;
+    static int RELEASES;
 
     public static void main(String[] args) throws Exception {
         ProjectsUtils.getInstance();
 
         String path = "Output/WalkForward-BK/";
         String projName = ProjectsUtils.getProjectNames().get(0);
-        NUMRELEASES = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(0)) -1;
+        RELEASES = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(0)) -1;
 
-        RetrieveWekaInfo retWekaInfo = new RetrieveWekaInfo(path, NUMRELEASES);
+        RetrieveInfoFromWeka retWekaInfo = new RetrieveInfoFromWeka(path, RELEASES);
         AllEvaluationLists allLists = retWekaInfo.retrieveClassifiersEvaluation(projName);
 
         EvaluationFile evaluationFileAvg = new EvaluationFile(path + projName, allLists.getAvgEvaluationsList(), "avg");
@@ -24,10 +26,10 @@ public class ClassifierClass {
 
 
         path = "Output/WalkForward-SY/";
-        projName = ProjectsUtils.getProjectNames().get(1);;
-        NUMRELEASES = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1)) -1;
+        projName = ProjectsUtils.getProjectNames().get(1);
+        RELEASES = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1)) -1;
 
-        retWekaInfo = new RetrieveWekaInfo(path, NUMRELEASES);
+        retWekaInfo = new RetrieveInfoFromWeka(path, RELEASES);
         allLists = retWekaInfo.retrieveClassifiersEvaluation(projName);
 
         evaluationFileAvg = new EvaluationFile(path + projName, allLists.getAvgEvaluationsList(), "avg");

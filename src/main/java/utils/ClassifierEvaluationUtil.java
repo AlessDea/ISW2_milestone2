@@ -2,8 +2,6 @@ package utils;
 
 import java.util.List;
 
-import model.ClassifierEvaluation;
-
 public class ClassifierEvaluationUtil {
 	
 	//This private constructor is meant to hide the public one: utility classes do not have to be instantiated.

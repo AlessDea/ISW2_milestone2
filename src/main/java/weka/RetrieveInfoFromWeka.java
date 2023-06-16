@@ -1,15 +1,13 @@
-package control;
+package weka;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.ClassifierEvaluationUtil;
-import model.AllEvaluationLists;
-import model.ClassifierEvaluation;
+import utils.AllEvaluationLists;
+import utils.ClassifierEvaluation;
 import weka.attributeSelection.BestFirst;
 import weka.attributeSelection.CfsSubsetEval;
-import weka.attributeSelection.GreedyStepwise;
 import weka.classifiers.CostMatrix;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
@@ -23,7 +21,7 @@ import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
 import weka.filters.supervised.instance.SpreadSubsample;
 
-public class RetrieveWekaInfo {
+public class RetrieveInfoFromWeka {
 
 	private static final String RANDOM_FOREST = "Random Forest";
 	private static final String NAIVE_BAYES = "Naive Bayes";
@@ -31,7 +29,7 @@ public class RetrieveWekaInfo {
 	private final String path;
 	private final Integer releaseIndex;
 
-	public RetrieveWekaInfo(String path, int releaseIndex) {
+	public RetrieveInfoFromWeka(String path, int releaseIndex) {
 		this.path = path;
 		this.releaseIndex = releaseIndex;
 	}
@@ -86,7 +84,7 @@ public class RetrieveWekaInfo {
 			// 1. VALIDATION NO FEATURE SELECTION
 
 			// 1.1. Random forest
-			randomForestClassifier.buildClassifier(training);	// TODO: Da un warning
+			randomForestClassifier.buildClassifier(training);
 			eval.evaluateModel(randomForestClassifier, testing);
 
 			// crea un'evaluation senza feature selection e sensitivity
@@ -210,10 +208,6 @@ public class RetrieveWekaInfo {
 			SpreadSubsample spreadSubsample = new SpreadSubsample();
 			spreadSubsample.setInputFormat(training);
 			spreadSubsample.setOptions(new String[] {"-M", "1.0"});
-/*
-			spreadSubsample.setOptions(new String[] {"-S", "1"});
-*/
-
 			FilteredClassifier fc = new FilteredClassifier();
 			fc.setFilter(spreadSubsample);
 

@@ -1,9 +1,8 @@
-package files;
+package utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import model.ClassifierEvaluation;
 
 public class EvaluationFile {
 

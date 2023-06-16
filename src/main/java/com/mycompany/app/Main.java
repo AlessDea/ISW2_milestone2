@@ -36,28 +36,31 @@ public class Main {
 
 
 
-    public static void walkForward(String outputDirectoryPath, String inputFilePath){
+    public static void walkForward(String outputDirectoryPath, String inputFilePath) throws IOException {
 
-        try {
-            String outputFilePathTrain;
-            String outputFilePathTest;
-            String line;
+        String outputFilePathTrain;
+        String outputFilePathTest;
+        String line;
 
-            String dirPath = "WalkForward-" + projName + "/";
-            new File("Output").mkdir();
-            new File(outputDirectoryPath + dirPath).mkdir();
+        String dirPath = "WalkForward-" + projName + File.separator;
+        new File("Output").mkdir();
+        new File(outputDirectoryPath + dirPath).mkdir();
 
-            for(int index = 2; index < releases; index++){
-                outputFilePathTrain = outputDirectoryPath + dirPath + index + "/Train.arff";
-                outputFilePathTest = outputDirectoryPath + dirPath + index + "/Test.arff";
-                new File(outputDirectoryPath + dirPath + index).mkdir();
+        BufferedReader reader = null;
+        FileWriter fileWriterTrain = null;
+        FileWriter fileWriterTest = null;
 
-                FileWriter fileWriterTrain = new FileWriter(outputFilePathTrain);
+        for(int index = 2; index < releases; index++){
+            outputFilePathTrain = outputDirectoryPath + dirPath + index + "/Train.arff";
+            outputFilePathTest = outputDirectoryPath + dirPath + index + "/Test.arff";
+            new File(outputDirectoryPath + dirPath + index).mkdir();
+
+            try {
+                fileWriterTrain = new FileWriter(outputFilePathTrain);
                 arffInit(fileWriterTrain, "Train");
-                FileWriter fileWriterTest = new FileWriter(outputFilePathTest);
+                fileWriterTest = new FileWriter(outputFilePathTest);
                 arffInit(fileWriterTest, "Test");
-
-                BufferedReader reader = new BufferedReader(new FileReader(inputFilePath));
+                reader = new BufferedReader(new FileReader(inputFilePath));
 
                 while ((line = reader.readLine()) != null) {
                     String[] values = line.split(",");
@@ -76,10 +79,15 @@ public class Main {
                 reader.close();
                 fileWriterTrain.close();
                 fileWriterTest.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                reader.close();
+                fileWriterTrain.close();
+                fileWriterTest.close();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -92,7 +100,7 @@ public class Main {
         walkForward(outputDirectoryPath, ProjectsUtils.getFilesPath().get(0));
 
         projName = ProjectsUtils.getProjectShortNames().get(1);
-        releases = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1));;
+        releases = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1));
         walkForward(outputDirectoryPath, ProjectsUtils.getFilesPath().get(1));
     }
 }
