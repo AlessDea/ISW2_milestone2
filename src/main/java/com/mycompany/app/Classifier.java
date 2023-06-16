@@ -7,16 +7,16 @@ import utils.ProjectsUtils;
 
 public class Classifier {
 
-    static int RELEASES;
+    static int releases;
 
     public static void main(String[] args) throws Exception {
         ProjectsUtils.getInstance();
 
         String path = "Output/WalkForward-BK/";
         String projName = ProjectsUtils.getProjectNames().get(0);
-        RELEASES = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(0)) -1;
+        releases = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(0)) -1;
 
-        RetrieveInfoFromWeka retWekaInfo = new RetrieveInfoFromWeka(path, RELEASES);
+        RetrieveInfoFromWeka retWekaInfo = new RetrieveInfoFromWeka(path, releases);
         AllEvaluationLists allLists = retWekaInfo.retrieveClassifiersEvaluation(projName);
 
         EvaluationFile evaluationFileAvg = new EvaluationFile(path + projName, allLists.getAvgEvaluationsList(), "avg");
@@ -27,9 +27,9 @@ public class Classifier {
 
         path = "Output/WalkForward-SY/";
         projName = ProjectsUtils.getProjectNames().get(1);
-        RELEASES = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1)) -1;
+        releases = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1)) -1;
 
-        retWekaInfo = new RetrieveInfoFromWeka(path, RELEASES);
+        retWekaInfo = new RetrieveInfoFromWeka(path, releases);
         allLists = retWekaInfo.retrieveClassifiersEvaluation(projName);
 
         evaluationFileAvg = new EvaluationFile(path + projName, allLists.getAvgEvaluationsList(), "avg");
