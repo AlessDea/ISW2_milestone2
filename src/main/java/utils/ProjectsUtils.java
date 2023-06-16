@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ProjectsUtils {
     private static List<String> projectNames = null;
-    private static List<String> repoPath = null;
+    private static List<String> filesPath = null;
     private static ProjectsUtils instance = null;
     private static List<String> projectShortNames = null;
     private static List<String> projectsReleasesNumber = null;
@@ -30,8 +30,8 @@ public class ProjectsUtils {
         return projectNames;
     }
 
-    public static List<String> getRepoPath(){
-        return repoPath;
+    public static List<String> getFilesPath(){
+        return filesPath;
     }
 
     public static List<String> getProjectShortNames(){
@@ -54,10 +54,13 @@ public class ProjectsUtils {
             JSONObject config = new JSONObject(myJson);
             JSONArray names = config.names();
 
-            projectsReleasesNumber = convertJSONArrayListString(config, names.getString(0));
-            projectShortNames = convertJSONArrayListString(config, names.getString(1));
-            projectNames = convertJSONArrayListString(config, names.getString(2));
-            repoPath = convertJSONArrayListString(config, names.getString(3));
+            projectShortNames = convertJSONArrayListString(config, names.getString(0));
+
+            projectsReleasesNumber = convertJSONArrayListString(config, names.getString(2));
+
+            projectNames = convertJSONArrayListString(config, names.getString(1));
+
+            filesPath = convertJSONArrayListString(config, names.getString(3));
         }
     }
 

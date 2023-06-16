@@ -3,9 +3,9 @@
     "bookkeeper",
     "syncope"
   ],
-  "REPO_PATH": [
-    "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/bookkeeper/.git",
-    "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/syncope/.git"
+  "FILES_PATH": [
+    "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/milestones/ISW2_milestone1/BOOKKEEPERFilesInfo.csv",
+    "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/milestones/ISW2_milestone1/SYNCOPEFilesInfo.csv"
   ],
   "PROJECT_SHORT_NAMES": ["BK","SY"],
   "RELEASES_NUMBER": ["8", "26"]
