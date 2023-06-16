@@ -63,7 +63,7 @@ public class RetrieveWekaInfo {
 
 			String completePath = this.path + index;
 
-			// 1. VALIDATION NO FEATURE SELECTION
+
 			DataSource source1 = new DataSource(completePath + "/Train.arff");
 			DataSource source2 = new DataSource(completePath + "/Test.arff");
 			Instances training = source1.getDataSet();
@@ -75,6 +75,7 @@ public class RetrieveWekaInfo {
 
 			int numAttr = training.numAttributes();
 
+
 			// identifica attributo oggetto della predizione (bugginess)
 			training.setClassIndex(numAttr - 1);
 			testing.setClassIndex(numAttr - 1);
@@ -82,8 +83,10 @@ public class RetrieveWekaInfo {
 			Evaluation eval = new Evaluation(testing);
 
 
+			// 1. VALIDATION NO FEATURE SELECTION
+
 			// 1.1. Random forest
-			randomForestClassifier.buildClassifier(training);	// TODO: TOGLI STO CAZZO DI WARNING
+			randomForestClassifier.buildClassifier(training);	// TODO: Da un warning
 			eval.evaluateModel(randomForestClassifier, testing);
 
 			// crea un'evaluation senza feature selection e sensitivity
@@ -136,24 +139,7 @@ public class RetrieveWekaInfo {
 
 
 
-			// 2. VALIDATION WITH FEATURE SELECTION (GREEDY BACKWARD SEARCH)
-			/* //Questa è con greedy backward search, a me serve best first
-
-			CfsSubsetEval subsetEval = new CfsSubsetEval();
-			GreedyStepwise search = new GreedyStepwise();
-			search.setSearchBackwards(true);
-
-			AttributeSelection filter = new AttributeSelection();
-			filter.setEvaluator(subsetEval);
-			filter.setSearch(search);
-			filter.setInputFormat(training);
-
-			Instances filteredTraining = Filter.useFilter(training, filter);
-			Instances filteredTesting = Filter.useFilter(testing, filter);
-
-			int numAttrFiltered = filteredTraining.numAttributes();
-			filteredTraining.setClassIndex(numAttrFiltered - 1);*/
-
+			// 2. VALIDATION WITH FEATURE SELECTION (Best First)
 			CfsSubsetEval subsetEval = new CfsSubsetEval();
 			BestFirst search = new BestFirst();
 
@@ -220,11 +206,13 @@ public class RetrieveWekaInfo {
 			featureSelIBkList.add(featureSelIBk);
 
 
-			//VALIDATION WITH UNDERSAMPLING
+			// 3. VALIDATION WITH UNDERSAMPLING
 			SpreadSubsample spreadSubsample = new SpreadSubsample();
 			spreadSubsample.setInputFormat(training);
-			/*spreadSubsample.setOptions(new String[] {"-M", "1.0"});*/ // così tolgo le release che terminano con -M
+			spreadSubsample.setOptions(new String[] {"-M", "1.0"});
+/*
 			spreadSubsample.setOptions(new String[] {"-S", "1"});
+*/
 
 			FilteredClassifier fc = new FilteredClassifier();
 			fc.setFilter(spreadSubsample);
@@ -337,7 +325,7 @@ public class RetrieveWekaInfo {
 			costSensNaiveBayesList.add(costSensNaiveBayes);
 
 
-			// IBK
+			// 4.3. IBK
 			csc.setClassifier(ibkClassifier);
 			csc.setCostMatrix(costMatrix);
 			csc.buildClassifier(training);
@@ -399,12 +387,3 @@ public class RetrieveWekaInfo {
 		return allLists;
 	}
 }
-
-/*System.out.println(index + " : PRECISION : " + simpleRandomForest.getPrecision());
-			System.out.println(index + " : RECALL    : " + simpleRandomForest.getRecall());
-			System.out.println(index + " : AUC       : " + simpleRandomForest.getAuc());
-			System.out.println(index + " : KAPPA     : " + simpleRandomForest.getKappa());
-			System.out.println(index + " : TP        : " + simpleRandomForest.getTp());
-			System.out.println(index + " : FP        : " + simpleRandomForest.getFp());
-			System.out.println(index + " : TN        : " + simpleRandomForest.getTn());
-			System.out.println(index + " : FN        : " + simpleRandomForest.getFn() + "\n");*/

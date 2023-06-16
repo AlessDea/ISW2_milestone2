@@ -1,0 +1,114 @@
+SLIDE 1
+Introduzione
+
+L'obiettivo dello studio è quello di misurare l'andamento delle prestazioni di tre classificatori nei casi di applicazione di tecniche di feature selection, balancing e sensitivity.
+I classificatori considerati sono:
+    - RandomForest
+    - NaiveBayes
+    - IBk
+
+Per quanto riguarda le tecniche, sono state considerate:
+    - Feature Selection: No feature Selection e Best First
+    - Balancing: Undersampling
+    - Sensitivity: Sensitive Learning
+
+Sono stati analizzati due progetti di Apache Foundation: BookKeeper e Syncope. Sono stati creati quindi due dataset, uno per progetto, che riportano la buggyness delle classi.
+Per la creazione dei dataset è stata utilizzata la libreria JGit che permette di ottenere informazioni da Git.
+
+
+SLIDE 2
+Creazione del Dataset
+
+Gli step eseguiti per la creazione del dataset sono:
+1. retrieve delle release da Jira e da Git (tag)
+2. filtraggio delle release fra quelle ottenute da Jira e quelle ottenute da Git: vengono mantenute solo le release ottenute da Git che sono presenti anche su Jira
+3. Per ogni release prendi tutte le classi Java e calcola le metriche
+4. Retrieve dei ticket da Jira
+    4.1. Scarta i ticket che non hanno una FV
+    4.2. Assegna ad ogni release i ticket che hanno, in quella release, la FV
+5. Per ogni versione e per ogni file setta la buggyness
+    5.1. se un ticket non ha la IV allora viene calcolata utilizzando la Proportion
+6. Viene scartata l'ultima metà delle release
+
+Sono stati considerati solo ticket relativi a Bug con risoluzione fixed e stato resolved o closed.
+Su jira la FV corrisponde all'AV. Un ticket di Jira può avere più IV e più FV, per questo sono state prese la più vecchia IV e la più recente FV.
+La Proportion è stata applicata a quei ticket che non presentavano una IV, in particolare è stata utilizzata l'Incremental Proportion.
+
+
+SLIDE 3
+Metriche
+Le metriche considerate per la creazione del dataset sono:
+    - LOCs: numero di linee di codice
+    - Churn: added - deleted LOCs
+    - Age: età della classe
+    - Weighted Age: età della classe pesata sul numero di LOCs
+    - Number of Authors: numero di autori per una determinata classe
+    - Revisions: numero di commit in cui la classe è stata toccata
+    - LOC Touched: numero di LOCs toccate
+    - LOC Added: numero di LOCs aggiunte
+    - Avg Set Size: numero medio di file che sono stati toccati da commit insieme al file specifico
+    - Number of Fix: numero dei fix dei bug subito dalla classe
+
+Il dataset è un file CSV, viene quindi trasformato nel formato ARFF per poterci lavorare sopra con Weka.
+
+
+SLIDE 4
+Evaluation
+Prima di poter effettuare lo studio c'è bisogno di validate il dataset. In particolare è stata utilizzata la tecnica del WalkForward in quanto i dati sono strettamente legati ad eventi temporali.
+
+A questo punto è stato possibile analizzare i dati ottenuti.
+Per ogni classificatore e tecniche sono state calcolate e analizzate:
+    - AUC
+    - Kappa
+    - Precision
+    - Recall
+
+
+SLIDE 5
+BK AUC
+
+SLIDE 6
+BK Kappa
+
+SLIDE 7
+BK Precision
+
+SLIDE 8
+BK Recall
+
+SLIDE 9
+SY AUC
+
+SLIDE 10
+SY Kappa
+
+SLIDE 11
+SY Precision
+
+SLIDE 12
+SY Recall
+
+
+
+Per ogni progetto:
+	1. usa tecnica di validazione walk forward
+	2. usa RandomForest, NaiveBayes e IBK come classificatori
+	
+Bisogna validare le seguenti variabili, scegliendo un solo tipo di ognuna:
+	1. selection -> No selection o Best first
+	2. balancing -> No sampling, oversampling, undersampling, SMOTE
+	3. sensitivity -> No cost sensitive, Sensitive Threshold, Sensitive Learning (CFN = 10 * CFP)
+	
+Scelgo le prime due variabili, quindi dovrò studiare i tre classificatori nei seguenti casi:
+	1. no selection
+	2. selection (greedy backward search)
+	3. undersapling
+	4. sensitive learning 
+	
+Per ognuna di queste vengono calcolate:
+	- AUC
+	- KAPPA
+	- Precision
+	- Recall
+	
+	

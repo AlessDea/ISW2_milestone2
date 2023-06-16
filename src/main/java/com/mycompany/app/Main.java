@@ -1,14 +1,16 @@
 package com.mycompany.app;
 
+import utils.ProjectsUtils;
+
 import java.io.*;
 
 public class Main {
 
     static final int BKRELEASES = 8; //7+1
-    static final int SYRELEASES = 27; //26+1
+    static final int SYRELEASES = 26; //25+1
 
-    static String BKCSV = "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/milestone1/milestone1/BOOKKEEPERFilesInfo.csv";
-    static String SYCSV = "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/milestone1/milestone1/SYNCOPEFilesInfo.csv";
+    static String BKCSV = "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/milestones/ISW2_milestone1/BOOKKEEPERFilesInfo.csv";
+    static String SYCSV = "/home/alessandrodea/Scrivania/uni/Magistrale/isw2/isw_22-23/projects/milestones/ISW2_milestone1/SYNCOPEFilesInfo.csv";
 
     private static int releases;
     private static String projName;
@@ -86,14 +88,17 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String outputDirectoryPath = "Output/";
-        projName = "BK";
-        releases = BKRELEASES;
+
+        ProjectsUtils.getInstance();
+
+        projName = ProjectsUtils.getProjectShortNames().get(0);
+        releases = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(0));
         walkForward(outputDirectoryPath, BKCSV);
 
-        projName = "SY";
-        releases = SYRELEASES;
+        projName = ProjectsUtils.getProjectShortNames().get(1);
+        releases = Integer.parseInt(ProjectsUtils.getProjectsReleasesNumber().get(1));;
         walkForward(outputDirectoryPath, SYCSV);
     }
 }
